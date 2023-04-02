@@ -53,8 +53,8 @@ FROM alpine
 COPY --from=builder /pufferpanel /pufferpanel
 
 EXPOSE 8080 5657
-RUN mkdir -p /etc/pufferpanel && \
-    mkdir -p /var/lib/pufferpanel
+RUN kdir -p /etc/pufferpanel && \
+    mkdir -p /var/lib/pufferpanelm
 
 ENV PUFFER_LOGS=/etc/pufferpanel/logs \
     PUFFER_PANEL_TOKEN_PUBLIC=/etc/pufferpanel/public.pem \
@@ -71,4 +71,10 @@ ENV PUFFER_LOGS=/etc/pufferpanel/logs \
 WORKDIR /pufferpanel
 
 ENTRYPOINT ["/pufferpanel/pufferpanel"]
+
+PUID=${PUID:-911}
+PGID=${PGID:-911}
+groupmod -o -g "$PGID" pufferpanel
+usermod -o -u "$PUID" pufferpanel
+
 CMD ["run"]
