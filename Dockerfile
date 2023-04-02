@@ -56,7 +56,9 @@ EXPOSE 8080 5657
 RUN kdir -p /etc/pufferpanel && \
     mkdir -p /var/lib/pufferpanelm
 
-ENV PUFFER_LOGS=/etc/pufferpanel/logs \
+ENV GID=991 \
+    PID=991 \
+    PUFFER_LOGS=/etc/pufferpanel/logs \
     PUFFER_PANEL_TOKEN_PUBLIC=/etc/pufferpanel/public.pem \
     PUFFER_PANEL_TOKEN_PRIVATE=/etc/pufferpanel/private.pem \
     PUFFER_PANEL_DATABASE_DIALECT=sqlite3 \
@@ -71,10 +73,5 @@ ENV PUFFER_LOGS=/etc/pufferpanel/logs \
 WORKDIR /pufferpanel
 
 ENTRYPOINT ["/pufferpanel/pufferpanel"]
-
-PUID=${PUID:-911}
-PGID=${PGID:-911}
-groupmod -o -g "$PGID" pufferpanel
-usermod -o -u "$PUID" pufferpanel
 
 CMD ["run"]
