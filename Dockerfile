@@ -53,8 +53,10 @@ FROM alpine
 COPY --from=builder /pufferpanel /pufferpanel
 
 EXPOSE 8080 5657
-RUN kdir -p /etc/pufferpanel && \
-    mkdir -p /var/lib/pufferpanelm
+RUN mkdir -p /etc/pufferpanel && \
+    mkdir -p /var/lib/pufferpanelm && \
+    usradd pufferpanel --ingroup pufferpanel --home /pufferpanel && \
+    su pufferpanel
 
 ENV GID=991 \
     PID=991 \
